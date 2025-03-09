@@ -12,6 +12,14 @@ app.get('/', function(req, res) {
     console.log(__dirname)
 });
 
+app.get('/the-purpose', function(req, res) {
+  res.render("purpose/purpose", {});
+})
+
+app.get('/contact-us', function(req, res) {
+  res.render("contact-us/contact-us", {})
+})
+
 // Send back a static file
 // Use a regular expression to detect "any other route"
 // Define the route last such that other routes would

@@ -4,6 +4,10 @@ i {
   text-decoration: none !important;
 }
 
+.active {
+  text-decoration: underline !important;
+}
+
 #home-h2 {
     color: #E57DE5;
 }
