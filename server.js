@@ -3,7 +3,7 @@ const app = express();
 
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + "/home.html")
+    res.sendFile(__dirname + "/home/home.html")
     console.log(__dirname)
 });
 

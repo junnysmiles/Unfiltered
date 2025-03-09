@@ -1,0 +1,5 @@
+a:hover i,
+a,
+i {
+  text-decoration: none !important;
+}
