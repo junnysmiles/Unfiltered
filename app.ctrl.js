@@ -1,19 +1,35 @@
 const express = require('express');
 const app = express();
 
+const Model = require("./app.model.js")
+
+async function startup()
+{
+  await Model.makeConnection()
+}
+startup()
+
 const mustacheExpress = require("mustache-express");
 
 app.engine("mustache", mustacheExpress());
 app.set("view engine", "mustache");
 app.set("views", __dirname + "/views")
 
-app.get('/', function(req, res) {
-    res.render("home/home", {});
+app.get('/', async function(req, res) {
     console.log(__dirname)
+    const postsArray = await Model.getAllPosts()
+
+    console.log(postsArray)
+
+    res.render("home/home", {posts: postsArray});
 });
 
 app.get('/the-purpose', function(req, res) {
   res.render("purpose/purpose", {});
+})
+
+app.get('/vent', function(req, res) {
+  res.render("vent/vent", {})
 })
 
 app.get('/contact-us', function(req, res) {
