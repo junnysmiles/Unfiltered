@@ -20,6 +20,10 @@ app.get('/contact-us', function(req, res) {
   res.render("contact-us/contact-us", {})
 })
 
+app.get('/disclaimer', function(req, res) {
+  res.render("disclaimer/disclaimer", {})
+})
+
 // Send back a static file
 // Use a regular expression to detect "any other route"
 // Define the route last such that other routes would
