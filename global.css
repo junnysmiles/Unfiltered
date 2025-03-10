@@ -15,3 +15,15 @@ i {
 #card {
   width: 400px;
 }
+
+#post-body {
+  color: #434343;
+}
+
+#likes {
+  margin: 3px !important;
+}
+
+#disclaimer-here {
+  color: #E57DE5;
+}

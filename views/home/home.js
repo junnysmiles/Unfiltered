@@ -38,3 +38,27 @@ themeToggleBtn.addEventListener('click', function() {
     }
     
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("/posts")
+        .then(response => response.json())
+        .then(posts => {
+            // Convert hashtag string into an array for Mustache
+            posts.forEach(post => post.hashtags = post.hashtags ? post.hashtags.split(",") : []);
+            
+            // Render with Mustache.js
+            const template = document.getElementById("post-template").innerHTML;
+            document.getElementById("posts-container").innerHTML = Mustache.render(template, { posts });
+
+            // Attach Like button events
+            document.querySelectorAll(".like-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const postId = this.getAttribute("data-id");
+                    fetch(`/like/${postId}`, { method: "POST" })
+                        .then(() => this.innerHTML = `❤️ ${parseInt(this.textContent) + 1} Likes`)
+                        .catch(error => console.error("Error liking post:", error));
+                });
+            });
+        })
+        .catch(error => console.error("Error fetching posts:", error));
+});
