@@ -20,8 +20,12 @@ i {
   color: #434343;
 }
 
-#likes {
+#likes-div {
   margin: 3px !important;
+}
+
+#likes {
+  color: #212529;
 }
 
 #disclaimer-here {

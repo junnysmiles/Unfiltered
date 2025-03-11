@@ -17,29 +17,15 @@ async function getAllPosts()
     return results
 }
 
-async function getHashtags()
-{
-    const query = `
-        SELECT Posts.ID, Posts.post, Posts.timestamp, Posts.likes, 
-        IFNULL(GROUP_CONCAT(Hashtags.hashtag), '') AS hashtags
-        FROM Posts
-        LEFT JOIN PostHashtags ON Posts.ID = PostHashtags.post_id
-        LEFT JOIN Hashtags ON PostHashtags.hashtag_id = Hashtags.ID
-        GROUP BY Posts.ID
-        ORDER BY timestamp DESC;`
+async function createPost(post, hashtags, timestamp) {
+    await db.run("INSERT INTO Posts (post, hashtags, timestamp, likes) VALUES (?, ?, ?, 0)",
+        [post, hashtags, timestamp]
+    )
+}   
 
-    
-    const results = db.all(query, [], (err, rows) => {
-            if (err) return res.status(500).json({ error: err.message });
-    
-            // Convert the hashtag string to an array for proper Mustache rendering
-            rows.forEach(post => {
-                post.hashtags = post.hashtags ? post.hashtags.split(",") : [];
-            });
-    
-            res.json(rows);
-        });
-    return results
-}
+// async function incrementLikes(id) {
+//     const results = await db.all("UPDATE Posts SET likes = likes + 1 WHERE ID = ?", id)
+//     return results
+// }
 
-module.exports = {makeConnection, getAllPosts, getHashtags}
+module.exports = {makeConnection, getAllPosts, createPost}

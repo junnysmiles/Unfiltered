@@ -15,29 +15,72 @@ app.engine("mustache", mustacheExpress());
 app.set("view engine", "mustache");
 app.set("views", __dirname + "/views")
 
+app.use(express.static(__dirname + "/public"));
+
 app.get('/', async function(req, res) {
     const postsArray = await Model.getAllPosts()
-    const hashtagsArray = await Model.getHashtags()
 
     postsArray.forEach(post => {
       post.timestamp = formatTimestamp(post.timestamp)
+      post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
     })
 
-    hashtagsArray.forEach(hashtags => {
-      hashtags.hashtags = hashtags.hashtags ? hashtags.hashtags.split(",") : [];
-    })
-
-    console.log(hashtagsArray)
-
-    res.render("home/home", {posts: postsArray, hashtags: hashtagsArray});
+    res.render("home/home", {posts: postsArray});
 });
 
 app.get('/the-purpose', function(req, res) {
   res.render("purpose/purpose", {});
 })
 
-app.get('/vent', function(req, res) {
-  res.render("vent/vent", {})
+app.get('/vent', async function(req, res) {
+  res.render("vent/vent", {});
+})
+
+app.get('/addpost', async function (req, res) {
+  console.log(req.query)
+  console.log(req.query.post)
+  console.log(req.query.hashtags)
+
+  const post = req.query.post;
+  const hashtags = req.query.hashtags;
+  let errors = [];
+  let errorMessage = '';
+
+    // Validate inputs
+    if (!post || post.trim() === '') {
+      errors.push('Please enter your diary entry.');
+    }
+    if (!hashtags || hashtags.trim() === '') {
+      errors.push('Please enter at least 1 hashtag.');
+    }
+
+    if (errors.length > 0) {
+      errorMessage = errors.join('<br>');
+      res.render("vent/vent", { 
+        post: post, 
+        hashtags: hashtags,
+        errorMessage: errorMessage 
+      });
+    } else {
+      // If no errors, proceed with saving the post
+      var currentdate = new Date(); 
+      var datetime = addZero(currentdate.getFullYear()) + "-" +
+                      addZero(currentdate.getMonth()+1) + "-" +
+                      addZero(currentdate.getDate()) + " " + 
+                      addZero(currentdate.getHours()) + ":" +   
+                      addZero(currentdate.getMinutes()) + ":" + 
+                      addZero(currentdate.getSeconds());
+  
+      await Model.createPost(post, hashtags, datetime);
+  
+      const postsArray = await Model.getAllPosts();
+      postsArray.forEach(post => {
+        post.timestamp = formatTimestamp(post.timestamp);
+        post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
+      });
+  
+      res.render("home/home", { posts: postsArray });
+    }
 })
 
 app.get('/contact-us', function(req, res) {
@@ -48,12 +91,16 @@ app.get('/disclaimer', function(req, res) {
   res.render("disclaimer/disclaimer", {})
 })
 
-app.post("/like/:id", (req, res) => {
-  db.run("UPDATE Posts SET likes = likes + 1 WHERE ID = ?", [req.params.id], err => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ success: true });
-  });
-});
+// app.post("/like/:id", async function(req, res) {
+//   await Model.incrementLikes(req.params.id)
+//   const postsArray = await Model.getAllPosts()
+//   res.render("home/home", {posts: postsArray});
+
+//   // db.run("UPDATE Posts SET likes = likes + 1 WHERE ID = ?", [req.params.id], err => {
+//   //     if (err) return res.status(500).json({ error: err.message });
+//   //     res.json({ success: true });
+//   // });
+// });
 
 // Send back a static file
 // Use a regular expression to detect "any other route"
@@ -68,8 +115,13 @@ app.get(/^(.+)$/, function(req,res){
   {
     console.log("App listening....");
   });
-  
-  
+
+
+function addZero(str)
+{
+    return str < 10 ? ('0' + str) : str;
+}
+
 // Format TimeStamp from SQL -> February 12, 2024 @ 10:34am
 function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
