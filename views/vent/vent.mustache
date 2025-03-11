@@ -48,8 +48,8 @@
   </div>
   <div class="pt-5 pb-5">
     <div class="d-flex justify-content-center pt-3">
-      <form class="row" id="post-diary" action="/addpost">
-          <div class="mb-4 mx-0 col-12" id="error-output" role="alert alert-danger">{{#errorMessage}}{{errorMessage}}{{/errorMessage}}</div>
+      <form class="row" id="post-diary">
+          <div class="mb-4 mx-0 col-12 is-invalid" id="error-output" role="alert alert-danger"></div>
           <div class="col-12 mb-3">
             <label class="form-label" for="post">Dear Diary,</label>
             <textarea class="form-control" type="text" name="post" id="post" placeholder="Maximum 500 characters..."></textarea>

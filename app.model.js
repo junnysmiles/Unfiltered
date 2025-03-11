@@ -23,9 +23,14 @@ async function createPost(post, hashtags, timestamp) {
     )
 }   
 
-// async function incrementLikes(id) {
-//     const results = await db.all("UPDATE Posts SET likes = likes + 1 WHERE ID = ?", id)
-//     return results
-// }
+async function incrementLikes(id) {
+    const results = await db.all("UPDATE Posts SET likes = likes + 1 WHERE ID = ?", id)
+    return results
+}
 
-module.exports = {makeConnection, getAllPosts, createPost}
+async function getLikes(id) {
+    const results = await db.all("SELECT likes FROM Posts WHERE id = ?", id)
+    return results
+}
+
+module.exports = {makeConnection, getAllPosts, createPost, incrementLikes, getLikes}

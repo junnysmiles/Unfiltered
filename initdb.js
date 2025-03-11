@@ -7,7 +7,7 @@ db.serialize(() => {
     // Create Posts Table
     db.run(`CREATE TABLE Posts (
         post TEXT NOT NULL, 
-        hashtags TEXT UNIQUE NOT NULL,
+        hashtags TEXT NOT NULL,
         timestamp TIMESTAMP NOT NULL, 
         likes INTEGER DEFAULT 0
     )`);

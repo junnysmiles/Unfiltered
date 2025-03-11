@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+app.use(express.json())
 
 const Model = require("./app.model.js")
 
@@ -36,52 +37,52 @@ app.get('/vent', async function(req, res) {
   res.render("vent/vent", {});
 })
 
-app.get('/addpost', async function (req, res) {
-  console.log(req.query)
-  console.log(req.query.post)
-  console.log(req.query.hashtags)
+// app.get('/addpost', async function (req, res) {
+//   console.log(req.query.post)
+//   console.log(req.query.hashtags)
 
-  const post = req.query.post;
-  const hashtags = req.query.hashtags;
-  let errors = [];
-  let errorMessage = '';
+//   const post = req.query.post;
+//   const hashtags = req.query.hashtags;
 
-    // Validate inputs
-    if (!post || post.trim() === '') {
-      errors.push('Please enter your diary entry.');
-    }
-    if (!hashtags || hashtags.trim() === '') {
-      errors.push('Please enter at least 1 hashtag.');
-    }
+//   let errors = [];
+//   let errorMessage = '';
 
-    if (errors.length > 0) {
-      errorMessage = errors.join('<br>');
-      res.render("vent/vent", { 
-        post: post, 
-        hashtags: hashtags,
-        errorMessage: errorMessage 
-      });
-    } else {
-      // If no errors, proceed with saving the post
-      var currentdate = new Date(); 
-      var datetime = addZero(currentdate.getFullYear()) + "-" +
-                      addZero(currentdate.getMonth()+1) + "-" +
-                      addZero(currentdate.getDate()) + " " + 
-                      addZero(currentdate.getHours()) + ":" +   
-                      addZero(currentdate.getMinutes()) + ":" + 
-                      addZero(currentdate.getSeconds());
+//   // Validate inputs
+//   if (!post || post.trim() === '') {
+//       errors.push('Please enter your diary entry.');
+//   }
+//   if (!hashtags || hashtags.trim() === '') {
+//       errors.push('Please enter at least 1 hashtag.');
+//   } 
+
+//   if (errors.length > 0) {
+//     errorMessage = errors.join('<br>');
+//     res.render("vent/vent", { 
+//       post: post, 
+//       hashtags: hashtags,
+//       errorMessage: errorMessage 
+//     });
+//   } else{
+//     // Generate timestamp
+//     let currentdate = new Date();
+//     let datetime = addZero(currentdate.getFullYear()) + "-" +
+//         addZero(currentdate.getMonth() + 1) + "-" +
+//         addZero(currentdate.getDate()) + " " +
+//         addZero(currentdate.getHours()) + ":" +
+//         addZero(currentdate.getMinutes()) + ":" +
+//         addZero(currentdate.getSeconds());
+
+//     await Model.createPost(post, hashtags, datetime);
+
+//     const postsArray = await Model.getAllPosts();
+//     postsArray.forEach(post => {
+//       post.timestamp = formatTimestamp(post.timestamp);
+//       post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
+//     });
   
-      await Model.createPost(post, hashtags, datetime);
-  
-      const postsArray = await Model.getAllPosts();
-      postsArray.forEach(post => {
-        post.timestamp = formatTimestamp(post.timestamp);
-        post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
-      });
-  
-      res.render("home/home", { posts: postsArray });
-    }
-})
+//     res.render("home/home", { posts: postsArray });
+//   }
+// })
 
 app.get('/contact-us', function(req, res) {
   res.render("contact-us/contact-us", {})
@@ -91,16 +92,13 @@ app.get('/disclaimer', function(req, res) {
   res.render("disclaimer/disclaimer", {})
 })
 
-// app.post("/like/:id", async function(req, res) {
-//   await Model.incrementLikes(req.params.id)
-//   const postsArray = await Model.getAllPosts()
-//   res.render("home/home", {posts: postsArray});
-
-//   // db.run("UPDATE Posts SET likes = likes + 1 WHERE ID = ?", [req.params.id], err => {
-//   //     if (err) return res.status(500).json({ error: err.message });
-//   //     res.json({ success: true });
-//   // });
-// });
+app.post("/like/:id", async function(req, res) {
+  await Model.incrementLikes(req.params.id)
+  console.log(postsArray.id, postsArray.likes)
+  const likes = await Model.getLikes(req.params.id)
+  const postsArray = await Model.getAllPosts()
+  res.render("home/home", {posts: postsArray, likes: likes});
+});
 
 // Send back a static file
 // Use a regular expression to detect "any other route"
