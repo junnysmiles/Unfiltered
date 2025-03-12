@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 app.use(express.json())
 
@@ -37,52 +37,52 @@ app.get('/vent', async function(req, res) {
   res.render("vent/vent", {});
 })
 
-// app.get('/addpost', async function (req, res) {
-//   console.log(req.query.post)
-//   console.log(req.query.hashtags)
+app.get('/addpost', async function (req, res) {
+  console.log(req.query.post)
+  console.log(req.query.hashtags)
 
-//   const post = req.query.post;
-//   const hashtags = req.query.hashtags;
+  const post = req.query.post;
+  const hashtags = req.query.hashtags;
 
-//   let errors = [];
-//   let errorMessage = '';
+  let errors = [];
+  let errorMessage = '';
 
-//   // Validate inputs
-//   if (!post || post.trim() === '') {
-//       errors.push('Please enter your diary entry.');
-//   }
-//   if (!hashtags || hashtags.trim() === '') {
-//       errors.push('Please enter at least 1 hashtag.');
-//   } 
+  // Validate inputs
+  if (!post || post.trim() === '') {
+      errors.push('Please enter your diary entry.');
+  }
+  if (!hashtags || hashtags.trim() === '') {
+      errors.push('Please enter at least 1 hashtag.');
+  } 
 
-//   if (errors.length > 0) {
-//     errorMessage = errors.join('<br>');
-//     res.render("vent/vent", { 
-//       post: post, 
-//       hashtags: hashtags,
-//       errorMessage: errorMessage 
-//     });
-//   } else{
-//     // Generate timestamp
-//     let currentdate = new Date();
-//     let datetime = addZero(currentdate.getFullYear()) + "-" +
-//         addZero(currentdate.getMonth() + 1) + "-" +
-//         addZero(currentdate.getDate()) + " " +
-//         addZero(currentdate.getHours()) + ":" +
-//         addZero(currentdate.getMinutes()) + ":" +
-//         addZero(currentdate.getSeconds());
+  if (errors.length > 0) {
+    errorMessage = errors.join('<br>');
+    res.render("vent/vent", { 
+      post: post, 
+      hashtags: hashtags,
+      errorMessage: errorMessage 
+    });
+  } else{
+    // Generate timestamp
+    let currentdate = new Date();
+    let datetime = addZero(currentdate.getFullYear()) + "-" +
+        addZero(currentdate.getMonth() + 1) + "-" +
+        addZero(currentdate.getDate()) + " " +
+        addZero(currentdate.getHours()) + ":" +
+        addZero(currentdate.getMinutes()) + ":" +
+        addZero(currentdate.getSeconds());
 
-//     await Model.createPost(post, hashtags, datetime);
+    await Model.createPost(post, hashtags, datetime);
 
-//     const postsArray = await Model.getAllPosts();
-//     postsArray.forEach(post => {
-//       post.timestamp = formatTimestamp(post.timestamp);
-//       post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
-//     });
+    const postsArray = await Model.getAllPosts();
+    postsArray.forEach(post => {
+      post.timestamp = formatTimestamp(post.timestamp);
+      post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
+    });
   
-//     res.render("home/home", { posts: postsArray });
-//   }
-// })
+    res.render("home/home", { posts: postsArray });
+  }
+})
 
 app.get('/contact-us', function(req, res) {
   res.render("contact-us/contact-us", {})

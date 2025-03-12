@@ -1,4 +1,4 @@
-// const axios = require('axios')
+const axios = require('axios')
 let post_diary = document.getElementById("post-diary")
 
 async function handleSubmit(event) {
@@ -13,6 +13,9 @@ async function handleSubmit(event) {
     let output = document.getElementById('error-output');
     let radio_output = document.getElementById('radio-error-output')
 
+    output.innerHTML = "";
+    output.classList.remove('alert', 'alert-danger', 'alert-success');
+    
     // Clear existing error classes
     post.classList.remove('is-invalid');
     hashtags.classList.remove('is-invalid');
@@ -30,23 +33,18 @@ async function handleSubmit(event) {
         was_errors = true;
     }
 
-    if (terms.checked === false) {
-        terms.classList.add('is-invalid')
-        radio_output.innerHTML = "You must agree before submitting."
-    }
-
-    if (terms.checked === true) {
-        terms.classList.remove('is-invalid')
-        radio_output.innerHTML = ""
+    if (!terms.checked) {
+        terms.classList.add('is-invalid');
+        radio_output.innerHTML = "You must agree before submitting.";
+        was_errors = true;
+    } else {
+        radio_output.innerHTML = "";
     }
 
     if (was_errors) {
         output.innerHTML = errors.join('<br>');
         output.classList.add('alert', 'alert-danger');
-    } else {
-        output.innerHTML = ""
-        output.classList.remove('alert-danger');
-    }
+    }     
 
     // try {
     //     let response = await axios.post("http://localhost:3000/addpost", {
@@ -55,14 +53,21 @@ async function handleSubmit(event) {
     //     });
 
     //     if (response.data.success) {
-    //         // Redirect to home page or show success message
-    //         window.location.href = "/";
+    //         output.innerHTML = "Post Submitted!";
+    //         output.classList.add('alert', 'alert-success');
+
+    //         // Clear the form
+    //         post.value = "";
+    //         hashtags.value = "";
+    //         terms.checked = false;
     //     } else {
-    //         output.innerHTML = "<p>Something went wrong. Please try again.</p>";
+    //         output.innerHTML = "Something went wrong!";
+    //         output.classList.add('alert', 'alert-danger');
     //     }
     // } catch (error) {
     //     console.error("Submission failed:", error);
     //     output.innerHTML = "<p>Something went wrong. Please try again.</p>";
+    //     output.classList.add('alert', 'alert-danger');
     // }
 }
 

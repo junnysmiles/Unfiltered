@@ -1,0 +1,5 @@
+to run the site:
+
+- make sure to "npm install"
+- run "node initdb.js" if you want to reset the records back to the original 6
+- nodemon is installed, so just run "nodemon app.ctrl.js"
