@@ -41,22 +41,24 @@
     
 // });
 
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById(".like-btn").forEach(button => {
-        button.addEventListener("click", async function() {
-            const postId = this.getAttribute("data-id");
+// commenting this out until i get to the likes logic
 
-            try {
-                let response = await post(`/like/${postId}`);
+// document.addEventListener("DOMContentLoaded", function() {
+//     document.getElementById(".like-btn").forEach(button => {
+//         button.addEventListener("click", async function() {
+//             const postId = this.getAttribute("data-id");
+
+//             try {
+//                 let response = await post(`/like/${postId}`);
                 
-                if (response.data.success) {
-                    document.getElementById(`likes-${postId}`).textContent = response.data.likes;
-                } else {
-                    console.error("Failed to update likes:", response.data.message);
-                }
-            } catch (error) {
-                console.error("Error liking post:", error);
-            }
-        });
-    });
-});
+//                 if (response.data.success) {
+//                     document.getElementById(`likes-${postId}`).textContent = response.data.likes;
+//                 } else {
+//                     console.error("Failed to update likes:", response.data.message);
+//                 }
+//             } catch (error) {
+//                 console.error("Error liking post:", error);
+//             }
+//         });
+//     });
+// });

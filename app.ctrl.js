@@ -16,7 +16,6 @@ const mustacheExpress = require("mustache-express");
 app.engine("mustache", mustacheExpress());
 app.set("view engine", "mustache");
 app.set("views", __dirname + "/views")
-
 app.use(express.static(__dirname + "/public"));
 
 app.get('/', async function(req, res) {
@@ -38,6 +37,15 @@ app.get('/vent', async function(req, res) {
   res.render("vent/vent", {});
 })
 
+app.get('/contact-us', function(req, res) {
+  res.render("contact-us/contact-us", {})
+})
+
+app.get('/disclaimer', function(req, res) {
+  res.render("disclaimer/disclaimer", {})
+})
+
+// More logic
 app.post('/addpost', async function (req, res) {
   console.log(req.body)
   console.log(req.body.post)
@@ -86,14 +94,6 @@ app.post('/addpost', async function (req, res) {
   }
 })
 
-app.get('/contact-us', function(req, res) {
-  res.render("contact-us/contact-us", {})
-})
-
-app.get('/disclaimer', function(req, res) {
-  res.render("disclaimer/disclaimer", {})
-})
-
 app.post("/like/:id", async function(req, res) {
   await Model.incrementLikes(req.params.id)
   console.log(postsArray.id, postsArray.likes)
@@ -101,6 +101,7 @@ app.post("/like/:id", async function(req, res) {
   const postsArray = await Model.getAllPosts()
   res.render("home/home", {posts: postsArray, likes: likes});
 });
+
 
 // Send back a static file
 // Use a regular expression to detect "any other route"
@@ -117,6 +118,7 @@ app.get(/^(.+)$/, function(req,res){
   });
 
 
+// Format the zeros for timestamp
 function addZero(str)
 {
     return str < 10 ? ('0' + str) : str;
