@@ -46,29 +46,29 @@ async function handleSubmit(event) {
         output.classList.add('alert', 'alert-danger');
     }     
 
-    // try {
-    //     let response = await axios.post("http://localhost:3000/addpost", {
-    //         post: post.value,
-    //         hashtags: hashtags.value
-    //     });
+    try {
+        let response = await axios.post("http://localhost:3000/addpost", {
+            post: post.value,
+            hashtags: hashtags.value
+        });
 
-    //     if (response.data.success) {
-    //         output.innerHTML = "Post Submitted!";
-    //         output.classList.add('alert', 'alert-success');
+        if (response.data.success) {
+            output.innerHTML = "Post Submitted!";
+            output.classList.add('alert', 'alert-success');
 
-    //         // Clear the form
-    //         post.value = "";
-    //         hashtags.value = "";
-    //         terms.checked = false;
-    //     } else {
-    //         output.innerHTML = "Something went wrong!";
-    //         output.classList.add('alert', 'alert-danger');
-    //     }
-    // } catch (error) {
-    //     console.error("Submission failed:", error);
-    //     output.innerHTML = "<p>Something went wrong. Please try again.</p>";
-    //     output.classList.add('alert', 'alert-danger');
-    // }
+            // Clear the form
+            post.value = "";
+            hashtags.value = "";
+            terms.checked = false;
+        } else {
+            output.innerHTML = "Something went wrong!";
+            output.classList.add('alert', 'alert-danger');
+        }
+    } catch (error) {
+        console.error("Submission failed:", error);
+        output.innerHTML = "<p>Something went wrong. Please try again.</p>";
+        output.classList.add('alert', 'alert-danger');
+    }
 }
 
 post_diary.addEventListener('submit', handleSubmit);

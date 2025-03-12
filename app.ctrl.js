@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
 const Model = require("./app.model.js")
 
@@ -37,9 +38,10 @@ app.get('/vent', async function(req, res) {
   res.render("vent/vent", {});
 })
 
-app.get('/addpost', async function (req, res) {
-  console.log(req.query.post)
-  console.log(req.query.hashtags)
+app.post('/addpost', async function (req, res) {
+  console.log(req.body)
+  console.log(req.body.post)
+  console.log(req.body.hashtags)
 
   const post = req.query.post;
   const hashtags = req.query.hashtags;
