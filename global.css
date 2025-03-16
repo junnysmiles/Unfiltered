@@ -4,7 +4,7 @@ i {
   text-decoration: none !important;
 }
 
-.active {
+#active {
   text-decoration: underline !important;
 }
 

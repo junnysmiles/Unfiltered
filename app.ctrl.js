@@ -30,11 +30,11 @@ app.get('/', async function(req, res) {
 });
 
 app.get('/the-purpose', function(req, res) {
-  res.render("purpose", {});
+  res.render("purpose", {purposenav: true});
 })
 
 app.get('/vent', async function(req, res) {
-  res.render("vent", {});
+  res.render("vent", {ventnav: true});
 })
 
 //-----------------------------------------------------------------------
