@@ -1,4 +1,5 @@
 const axios = require('axios')
+
 let post_diary = document.getElementById("post-diary")
 
 async function handleSubmit(event) {
@@ -20,6 +21,30 @@ async function handleSubmit(event) {
     post.classList.remove('is-invalid');
     hashtags.classList.remove('is-invalid');
     terms.classList.remove('is-invalid')
+
+    try {
+        let response = await axios.post("http://localhost:3000/vent", {
+            post: post.value,
+            hashtags: hashtags.value
+        });
+
+        if (response.data.success) {
+            output.innerHTML = "Post Submitted!";
+            output.classList.add('alert', 'alert-success');
+
+            // Clear the form
+            post.value = "";
+            hashtags.value = "";
+            terms.checked = false;
+        } else {
+            output.innerHTML = "Something went wrong! Please try again";
+            output.classList.add('alert', 'alert-danger');
+        }
+    } catch (error) {
+        console.error("Submission failed:", error);
+        output.innerHTML = "Something went wrong! Please try again.";
+        output.classList.add('alert', 'alert-danger');
+    }
 
     if (post.value === "") {
         post.classList.add('is-invalid');
@@ -45,30 +70,6 @@ async function handleSubmit(event) {
         output.innerHTML = errors.join('<br>');
         output.classList.add('alert', 'alert-danger');
     }     
-
-    try {
-        let response = await axios.post("http://localhost:3000/addpost", {
-            post: post.value,
-            hashtags: hashtags.value
-        });
-
-        if (response.data.success) {
-            output.innerHTML = "Post Submitted!";
-            output.classList.add('alert', 'alert-success');
-
-            // Clear the form
-            post.value = "";
-            hashtags.value = "";
-            terms.checked = false;
-        } else {
-            output.innerHTML = "Something went wrong!";
-            output.classList.add('alert', 'alert-danger');
-        }
-    } catch (error) {
-        console.error("Submission failed:", error);
-        output.innerHTML = "<p>Something went wrong. Please try again.</p>";
-        output.classList.add('alert', 'alert-danger');
-    }
 }
 
 post_diary.addEventListener('submit', handleSubmit);

@@ -49,7 +49,7 @@
   </div>
   <div class="pt-5 pb-5">
     <div class="d-flex justify-content-center pt-2">
-      <form class="row" id="post-diary">
+      <form class="row" id="post-diary" action="/vent" method="post">
           <div class="mb-2 mx-0 col-12 is-invalid" id="error-output" role="alert alert-danger">{{errorMessage}}</div>
           <div class="col-12 mb-3">
             <label class="form-label" for="post">Dear Diary,</label>
@@ -75,34 +75,11 @@
       </form>
     </div>
   </div>
-  <div class="container">
-    <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
-      <div class="col mb-3 d-flex d-flex-row">
-        <a class="h5 text-dark link-underline-opacity-0 fw-bold pe-1 text-uppercase" href="/">Unfiltered</a>
-        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-lock" viewBox="0 0 16 16">
-          <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2M5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1"/>
-        </svg>
-      </div>
-  
-      <div class="col mb-3"></div>
-  
-      <div class="col mb-3">
-        <h6><a class="text-dark link-underline-opacity-0" href="/the-purpose">The Purpose</a></h6>
-      </div>
-  
-      <div class="col mb-3">
-        <h6><a class="text-dark link-underline-opacity-0" href="/contact-us">Contact Us</a></h6>
-      </div>
-  
-      <div class="col mb-3">
-        <h6><a class="text-secondary link-underline-opacity-0" href="/disclaimer">Disclaimer</a></h6>
-      </div>
-    </footer>
-  </div>
+  {{>footer}}
   
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-  <script src="/public/js/vent.js"></script>
+  {{! <script src="/public/js/vent.js"></script> }}
 </body>
 </html>

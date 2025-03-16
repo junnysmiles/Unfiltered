@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
+const mustacheExpress = require("mustache-express");
 
 const Model = require("./app.model.js")
 
@@ -11,12 +10,13 @@ async function startup()
 }
 startup()
 
-const mustacheExpress = require("mustache-express");
-
 app.engine("mustache", mustacheExpress());
 app.set("view engine", "mustache");
 app.set("views", __dirname + "/views")
-app.use(express.static(__dirname + "/public"));
+
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))                
+app.use(express.static(__dirname + "/public/js"));
 
 app.get('/', async function(req, res) {
     const postsArray = await Model.getAllPosts()
@@ -26,33 +26,28 @@ app.get('/', async function(req, res) {
       post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
     })
 
-    res.render("home/home", {posts: postsArray});
+    res.render("home", {posts: postsArray});
 });
 
 app.get('/the-purpose', function(req, res) {
-  res.render("purpose/purpose", {});
+  res.render("purpose", {});
 })
 
 app.get('/vent', async function(req, res) {
-  res.render("vent/vent", {});
+  res.render("vent", {});
 })
 
-app.get('/contact-us', function(req, res) {
-  res.render("contact-us/contact-us", {})
-})
+//-----------------------------------------------------------------------
 
-app.get('/disclaimer', function(req, res) {
-  res.render("disclaimer/disclaimer", {})
-})
-
-// More logic
-app.post('/addpost', async function (req, res) {
+// FIGURE IT OUT
+app.post('/vent', async function(req, res) {
   console.log(req.body)
   console.log(req.body.post)
   console.log(req.body.hashtags)
 
-  const post = req.query.post;
-  const hashtags = req.query.hashtags;
+  const post = req.body.post;
+  const hashtags = req.body.hashtags;
+
 
   let errors = [];
   let errorMessage = '';
@@ -66,10 +61,8 @@ app.post('/addpost', async function (req, res) {
   } 
 
   if (errors.length > 0) {
-    errorMessage = errors.join('<br>');
-    res.render("vent/vent", { 
-      post: post, 
-      hashtags: hashtags,
+    errorMessage = errors.join();
+    res.render("vent", { 
       errorMessage: errorMessage 
     });
   } else{
@@ -90,17 +83,83 @@ app.post('/addpost', async function (req, res) {
       post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
     });
   
-    res.render("home/home", { posts: postsArray });
+    res.render("home", { posts: postsArray });
   }
+  res.render("vent", {errorMessage: errorMessage});
 })
 
+//-----------------------------------------------------------------------
+
+app.get('/contact-us', function(req, res) {
+  res.render("contact-us", {})
+})
+
+app.get('/disclaimer', function(req, res) {
+  res.render("disclaimer", {})
+})
+
+
+//-----------------------------------------------------------------------
+
+// // More logic
+// app.post('/addpost', async function (req, res) {
+//   console.log(req.body)
+//   console.log(req.body.post)
+//   console.log(req.body.hashtags)
+
+//   const post = req.query.post;
+//   const hashtags = req.query.hashtags;
+
+//   let errors = [];
+//   let errorMessage = '';
+
+//   // Validate inputs
+//   if (!post || post.trim() === '') {
+//       errors.push('Please enter your diary entry.');
+//   }
+//   if (!hashtags || hashtags.trim() === '') {
+//       errors.push('Please enter at least 1 hashtag.');
+//   } 
+
+//   if (errors.length > 0) {
+//     errorMessage = errors.join('<br>');
+//     res.render("vent/vent", { 
+//       errorMessage: errorMessage 
+//     });
+//   } else{
+//     // Generate timestamp
+//     let currentdate = new Date();
+//     let datetime = addZero(currentdate.getFullYear()) + "-" +
+//         addZero(currentdate.getMonth() + 1) + "-" +
+//         addZero(currentdate.getDate()) + " " +
+//         addZero(currentdate.getHours()) + ":" +
+//         addZero(currentdate.getMinutes()) + ":" +
+//         addZero(currentdate.getSeconds());
+
+//     await Model.createPost(post, hashtags, datetime);
+
+//     // const postsArray = await Model.getAllPosts();
+//     // postsArray.forEach(post => {
+//     //   post.timestamp = formatTimestamp(post.timestamp);
+//     //   post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
+//     // });
+  
+//     // res.render("home/home", { posts: postsArray });
+//   }
+// })
+
+
+// FIGURE IT OUT
 app.post("/like/:id", async function(req, res) {
   await Model.incrementLikes(req.params.id)
   console.log(postsArray.id, postsArray.likes)
   const likes = await Model.getLikes(req.params.id)
   const postsArray = await Model.getAllPosts()
-  res.render("home/home", {posts: postsArray, likes: likes});
+  res.render("home", {posts: postsArray, likes: likes});
 });
+
+
+//-----------------------------------------------------------------------
 
 
 // Send back a static file
