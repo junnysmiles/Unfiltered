@@ -40,30 +40,49 @@ app.get('/vent', async function(req, res) {
 //-----------------------------------------------------------------------
 
 // FIGURE IT OUT
-app.post('/vent', async function(req, res) {
+app.post('/post-vent', async function(req, res) {
   console.log(req.body)
   console.log(req.body.post)
   console.log(req.body.hashtags)
+  console.log(req.body.radiocheck)
 
   const post = req.body.post;
   const hashtags = req.body.hashtags;
+  const terms = req.body.radiocheck;
 
 
   let errors = [];
   let errorMessage = '';
+  let errorInput = false
+  let postInput = false
+  let hashtagsInput = false
+  let radioError = '';
 
   // Validate inputs
   if (!post || post.trim() === '') {
-      errors.push('Please enter your diary entry.');
+    errors.push('Please enter your diary entry!');
+    errorInput = true
+    postInput = true
   }
   if (!hashtags || hashtags.trim() === '') {
-      errors.push('Please enter at least 1 hashtag.');
+    errors.push('Please enter at least 1 hashtag!');
+    errorInput = true
+    hashtagsInput = true
   } 
+  // if (!terms || terms === undefined) {
+  //   radioError = '<div id="radio-error-output" class="invalid-feedback">You must agree to the terms.</div>'
+  //   res.render("vent", { 
+  //     radioError: radioError
+  //   })
+  // }
+  if (errorInput) {
+    errorMessage = errors.join("<br>");
 
-  if (errors.length > 0) {
-    errorMessage = errors.join();
     res.render("vent", { 
-      errorMessage: errorMessage 
+      errorMessage: errorMessage,
+      errorInput: errorInput,
+      postInput: postInput,
+      hashtagsInput: hashtagsInput
     });
   } else{
     // Generate timestamp
@@ -82,10 +101,11 @@ app.post('/vent', async function(req, res) {
       post.timestamp = formatTimestamp(post.timestamp);
       post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
     });
+
+    const successMessage = "<div class='pb-2 pt-0'><div class='alert alert-success' role='alert'>Post Submitted Successfully!</div></div>"
   
-    res.render("home", { posts: postsArray });
+    res.render("home", { posts: postsArray, successMessage: successMessage });
   }
-  res.render("vent", {errorMessage: errorMessage});
 })
 
 //-----------------------------------------------------------------------
