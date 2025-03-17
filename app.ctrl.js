@@ -41,15 +41,9 @@ app.get('/vent', async function(req, res) {
 
 // FIGURE IT OUT
 app.post('/post-vent', async function(req, res) {
-  console.log(req.body)
-  console.log(req.body.post)
-  console.log(req.body.hashtags)
-  console.log(req.body.radiocheck)
-
   const post = req.body.post;
   const hashtags = req.body.hashtags;
   const radiocheck = req.body.radiocheck || '';
-
 
   let errors = [];
   let errorMessage = '';
@@ -60,20 +54,29 @@ app.post('/post-vent', async function(req, res) {
 
   // Validate inputs
   if (!post || post.trim() === '') {
-    errors.push('Please enter your diary entry!');
+    errors.push('Please enter your diary entry.');
     errorInput = true
     postInput = true
   }
+
+  if (post.length > 500) {
+    errors.push('Post must be under 500 characters.')
+    errorInput = true
+    postInput = true
+  }
+
   if (!hashtags || hashtags.trim() === '') {
-    errors.push('Please enter at least 1 hashtag!');
+    errors.push('Please enter at least 1 hashtag.');
     errorInput = true
     hashtagsInput = true
   } 
+
   if (!radiocheck) {
-    errors.push('<br><b>You must accept the terms of submission!</b>');
+    errors.push('<b>You must accept the terms of submission.</b>');
     errorInput = true;
     radioError = true;
   }
+
   if (errorInput) {
     errorMessage = errors.join("<br>");
 

@@ -6,7 +6,7 @@ db.serialize(() => {
 
     // Create Posts Table
     db.run(`CREATE TABLE Posts (
-        post TEXT NOT NULL, 
+        post VARCHAR(500) NOT NULL CHECK(length(post) <= 500), 
         hashtags TEXT NOT NULL,
         timestamp TIMESTAMP NOT NULL, 
         likes INTEGER DEFAULT 0
