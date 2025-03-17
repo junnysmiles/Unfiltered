@@ -32,11 +32,10 @@
           </div>
           <div class="form-check mb-4 col-12 d-flex justify-content-center">
             <div>
-              <input class="form-check-input me-2" type="radio" name="radiocheck" id="invalidCheck">
+              <input class="form-check-input me-2 {{#radioError}}is-invalid{{/radioError}}" type="radio" name="radiocheck" {{#oldRadio}}checked{{/oldRadio}}>
               <label class="form-check-label" for="invalidCheck">
                 I agree to the terms of submission
               </label>
-              {{{radioError}}}
             </div>
           </div>
           <div class="text-center col-6 d-grid gap-2 mx-auto">

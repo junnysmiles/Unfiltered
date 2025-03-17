@@ -48,7 +48,7 @@ app.post('/post-vent', async function(req, res) {
 
   const post = req.body.post;
   const hashtags = req.body.hashtags;
-  const terms = req.body.radiocheck;
+  const radiocheck = req.body.radiocheck || '';
 
 
   let errors = [];
@@ -56,7 +56,7 @@ app.post('/post-vent', async function(req, res) {
   let errorInput = false
   let postInput = false
   let hashtagsInput = false
-  let radioError = '';
+  let radioError = false;
 
   // Validate inputs
   if (!post || post.trim() === '') {
@@ -69,12 +69,11 @@ app.post('/post-vent', async function(req, res) {
     errorInput = true
     hashtagsInput = true
   } 
-  // if (!terms || terms === undefined) {
-  //   radioError = '<div id="radio-error-output" class="invalid-feedback">You must agree to the terms.</div>'
-  //   res.render("vent", { 
-  //     radioError: radioError
-  //   })
-  // }
+  if (!radiocheck) {
+    errors.push('<br><b>You must accept the terms of submission!</b>');
+    errorInput = true;
+    radioError = true;
+  }
   if (errorInput) {
     errorMessage = errors.join("<br>");
 
@@ -83,8 +82,10 @@ app.post('/post-vent', async function(req, res) {
       errorInput: errorInput,
       postInput: postInput,
       hashtagsInput: hashtagsInput,
+      radioError: radioError,
       oldPost: post || "",
-      oldHashtags: hashtags || ""
+      oldHashtags: hashtags || "",
+      oldRadio: radiocheck
     });
   } else{
     // Generate timestamp
