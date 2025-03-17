@@ -82,7 +82,9 @@ app.post('/post-vent', async function(req, res) {
       errorMessage: errorMessage,
       errorInput: errorInput,
       postInput: postInput,
-      hashtagsInput: hashtagsInput
+      hashtagsInput: hashtagsInput,
+      oldPost: post || "",
+      oldHashtags: hashtags || ""
     });
   } else{
     // Generate timestamp
