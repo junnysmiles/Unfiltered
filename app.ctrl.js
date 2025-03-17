@@ -37,9 +37,6 @@ app.get('/vent', async function(req, res) {
   res.render("vent", {ventnav: true});
 })
 
-//-----------------------------------------------------------------------
-
-// FIGURE IT OUT
 app.post('/post-vent', async function(req, res) {
   const post = req.body.post;
   const hashtags = req.body.hashtags;
@@ -114,8 +111,6 @@ app.post('/post-vent', async function(req, res) {
   }
 })
 
-//-----------------------------------------------------------------------
-
 app.get('/contact-us', function(req, res) {
   res.render("contact-us", {})
 })
@@ -126,53 +121,6 @@ app.get('/disclaimer', function(req, res) {
 
 
 //-----------------------------------------------------------------------
-
-// // More logic
-// app.post('/addpost', async function (req, res) {
-//   console.log(req.body)
-//   console.log(req.body.post)
-//   console.log(req.body.hashtags)
-
-//   const post = req.query.post;
-//   const hashtags = req.query.hashtags;
-
-//   let errors = [];
-//   let errorMessage = '';
-
-//   // Validate inputs
-//   if (!post || post.trim() === '') {
-//       errors.push('Please enter your diary entry.');
-//   }
-//   if (!hashtags || hashtags.trim() === '') {
-//       errors.push('Please enter at least 1 hashtag.');
-//   } 
-
-//   if (errors.length > 0) {
-//     errorMessage = errors.join('<br>');
-//     res.render("vent/vent", { 
-//       errorMessage: errorMessage 
-//     });
-//   } else{
-//     // Generate timestamp
-//     let currentdate = new Date();
-//     let datetime = addZero(currentdate.getFullYear()) + "-" +
-//         addZero(currentdate.getMonth() + 1) + "-" +
-//         addZero(currentdate.getDate()) + " " +
-//         addZero(currentdate.getHours()) + ":" +
-//         addZero(currentdate.getMinutes()) + ":" +
-//         addZero(currentdate.getSeconds());
-
-//     await Model.createPost(post, hashtags, datetime);
-
-//     // const postsArray = await Model.getAllPosts();
-//     // postsArray.forEach(post => {
-//     //   post.timestamp = formatTimestamp(post.timestamp);
-//     //   post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
-//     // });
-  
-//     // res.render("home/home", { posts: postsArray });
-//   }
-// })
 
 
 // FIGURE IT OUT
