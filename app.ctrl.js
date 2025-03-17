@@ -23,7 +23,7 @@ app.get('/', async function(req, res) {
 
     postsArray.forEach(post => {
       post.timestamp = formatTimestamp(post.timestamp)
-      post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
+      post.hashtags = post.hashtags.split(",").map(tag => `#${tag.trim()}`).join(" ");
     })
 
     res.render("home", {posts: postsArray});
@@ -42,6 +42,11 @@ app.post('/post-vent', async function(req, res) {
   const hashtags = req.body.hashtags;
   const radiocheck = req.body.radiocheck || '';
 
+  // Remove commas and split into words
+  let cleanedHashtags = hashtags.replace(/,/g, ''); // Remove commas
+  let words = cleanedHashtags.trim().split(/\s+/);  // Split by spaces
+
+  console.log(words)
   let errors = [];
   let errorMessage = '';
   let errorInput = false
@@ -67,6 +72,12 @@ app.post('/post-vent', async function(req, res) {
     errorInput = true
     hashtagsInput = true
   } 
+
+  if (words.length > 6) {
+    errors.push('Please enter less than 6 hashtags.')
+    errorInput = true
+    hashtagsInput = true
+  }
 
   if (!radiocheck) {
     errors.push('<b>You must accept the terms of submission.</b>');
@@ -102,7 +113,7 @@ app.post('/post-vent', async function(req, res) {
     const postsArray = await Model.getAllPosts();
     postsArray.forEach(post => {
       post.timestamp = formatTimestamp(post.timestamp);
-      post.hashtags = post.hashtags.split(",").map(tag => `#${tag}`).join(" ");
+      post.hashtags = post.hashtags.split(",").map(tag => `#${tag.trim()}`).join(" ");
     });
 
     const successMessage = "<div class='pb-2 pt-0'><div class='alert alert-success' role='alert'>Post Submitted Successfully!</div></div>"
