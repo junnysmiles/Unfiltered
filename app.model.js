@@ -36,4 +36,16 @@ async function sortByLatest() {
     return await db.all("SELECT * FROM Posts ORDER BY timestamp DESC")
 }
 
-module.exports = {makeConnection, getAllPosts, createPost, incrementLikes, getLikes, sortByLatest}
+async function sortByOldest() {
+    return await db.all("SELECT * FROM Posts ORDER BY timestamp ASC")
+}
+
+async function sortByMostPopular() {
+    return await db.all("SELECT * FROM Posts ORDER BY likes DESC");
+}
+
+async function sortByLeastPopular() {
+    return await db.all("SELECT * FROM Posts ORDER BY likes ASC");
+}
+
+module.exports = {makeConnection, getAllPosts, createPost, incrementLikes, getLikes, sortByLatest, sortByOldest, sortByMostPopular, sortByLeastPopular}

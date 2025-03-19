@@ -40,6 +40,39 @@ app.get('/latest', async function(req, res) {
   res.render("home", {posts: postsArray});
 })
 
+app.get('/oldest', async function(req, res) {
+  const postsArray = await Model.sortByOldest()
+
+  postsArray.forEach(post => {
+    post.timestamp = formatTimestamp(post.timestamp)
+    post.hashtags = post.hashtags.split(",").map(tag => `#${tag.trim()}`).join(" ");
+  })
+
+  res.render("home", {posts: postsArray});
+})
+
+app.get('/most-popular', async function(req, res) {
+  const postsArray = await Model.sortByMostPopular()
+
+  postsArray.forEach(post => {
+    post.timestamp = formatTimestamp(post.timestamp)
+    post.hashtags = post.hashtags.split(",").map(tag => `#${tag.trim()}`).join(" ");
+  })
+
+  res.render("home", {posts: postsArray});
+})
+
+app.get('/least-popular', async function(req, res) {
+  const postsArray = await Model.sortByLeastPopular()
+
+  postsArray.forEach(post => {
+    post.timestamp = formatTimestamp(post.timestamp)
+    post.hashtags = post.hashtags.split(",").map(tag => `#${tag.trim()}`).join(" ");
+  })
+
+  res.render("home", {posts: postsArray});
+})
+
 app.get('/the-purpose', function(req, res) {
   res.render("purpose", {purposenav: true});
 })
