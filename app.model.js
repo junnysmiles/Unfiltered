@@ -24,12 +24,11 @@ async function createPost(post, hashtags, timestamp) {
 }   
 
 async function incrementLikes(id) {
-    const results = await db.all("UPDATE Posts SET likes = likes + 1 WHERE ID = ?", id)
-    return results
+    await db.run("UPDATE Posts SET likes = likes + 1 WHERE rowid = ?", id);
 }
 
 async function getLikes(id) {
-    const results = await db.all("SELECT likes FROM Posts WHERE id = ?", id)
+    const results = await db.run("SELECT likes FROM Posts WHERE rowid = ?", id)
     return results
 }
 

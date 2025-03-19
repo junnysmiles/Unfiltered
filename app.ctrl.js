@@ -135,12 +135,26 @@ app.get('/disclaimer', function(req, res) {
 
 
 // FIGURE IT OUT
-app.post("/like/:id", async function(req, res) {
-  await Model.incrementLikes(req.params.id)
-  console.log(postsArray.id, postsArray.likes)
-  const likes = await Model.getLikes(req.params.id)
-  const postsArray = await Model.getAllPosts()
-  res.render("home", {posts: postsArray, likes: likes});
+app.post("/like/:rowid", async function(req, res) {
+  const postId = req.params.rowid
+  console.log(postId)
+
+  await Model.incrementLikes(postId)
+
+  res.redirect("/");
+
+  const successMessage = "<div class='pb-2 pt-0'><div class='alert alert-success' role='alert'>Post Submitted Successfully!</div></div>"
+
+
+  // const postsArray = await Model.getAllPosts()
+
+  // const likes = await Model.getLikes(postId)
+
+  // console.log(likes)
+
+  // res.render("home", {posts: postsArray, likes: postsArray.likes});
+  res.render("home", {successMessage: successMessage})
+  // res.send('<script>window.location.href="/";</script>');
 });
 
 
