@@ -10,7 +10,7 @@
 <body class="px-5 py-4 container-fluid">
   {{>navigation}}
   <div class="row align-items-center">
-    <div class="col-8">
+    <div class="col-lg-8 col-12">
       <h1 class="fw-bolder">
         The Purpose
       </h1>
@@ -26,14 +26,22 @@
         <b>Unfiltered</b> is a safe space for anonymous expression, designed for those who need to vent, rant, or share their thoughts without fear of judgment. Whether it’s frustration, sadness, or just something you can’t say out loud, this platform lets you release it — completely anonymously. Posts are visible to the public in real-time and can be "Liked" by others, fostering a sense of shared experience. After 48 hours, they disappear, leaving no trace. Unfiltered isn’t just an app; it’s a coping mechanism for those who feel unheard, offering a voice to those who need it most.
       </p>
     </div>
-    <div class="col-4">
+    <div class="col-lg-4 d-none d-lg-block">
       <img src="/assets/deardiary.png" class="img-fluid" />
     </div>
   </div>
-  <div class="pt-3 pb-5">
-    <h3 class="text-center">Concerned about something?</h3>
-    <div class="d-flex justify-content-center pt-3">
-      <a href="/contact-us"><button type="button" class="btn btn-dark">Get In Touch</button></a>
+  <div class="d-sm-block d-md-none d-lg-none d-xl-none">
+    <img src="/assets/deardiary.png" class="img-fluid" />
+  </div>
+  <div class="row">
+    <div class="pt-3 pb-5 col-md-6 col-lg-12 align-self-md-center">
+      <h3 class="text-center">Concerned about something?</h3>
+      <div class="d-flex justify-content-center pt-3">
+        <a href="/contact-us"><button type="button" class="btn btn-dark">Get In Touch</button></a>
+      </div>
+    </div>
+    <div class="col-md-6 d-none d-md-block d-lg-none">
+      <img src="/assets/deardiary.png" class="img-fluid" />
     </div>
   </div>
   {{>footer}}
