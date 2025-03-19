@@ -29,6 +29,17 @@ app.get('/', async function(req, res) {
     res.render("home", {posts: postsArray});
 });
 
+app.get('/latest', async function(req, res) {
+  const postsArray = await Model.sortByLatest()
+
+  postsArray.forEach(post => {
+    post.timestamp = formatTimestamp(post.timestamp)
+    post.hashtags = post.hashtags.split(",").map(tag => `#${tag.trim()}`).join(" ");
+  })
+
+  res.render("home", {posts: postsArray});
+})
+
 app.get('/the-purpose', function(req, res) {
   res.render("purpose", {purposenav: true});
 })
@@ -131,34 +142,24 @@ app.get('/disclaimer', function(req, res) {
 })
 
 
-//-----------------------------------------------------------------------
-
-
-// FIGURE IT OUT
 app.post("/like/:rowid", async function(req, res) {
   const postId = req.params.rowid
   console.log(postId)
 
   await Model.incrementLikes(postId)
 
-  res.redirect("/");
+  // res.redirect("/");
 
-  const successMessage = "<div class='pb-2 pt-0'><div class='alert alert-success' role='alert'>Post Submitted Successfully!</div></div>"
+  const postsArray = await Model.getAllPosts();
+  postsArray.forEach(post => {
+    post.timestamp = formatTimestamp(post.timestamp);
+    post.hashtags = post.hashtags.split(",").map(tag => `#${tag.trim()}`).join(" ");
+  });
 
+  const successMessage = "<div class='pb-2 pt-0'><div class='alert alert-success' role='alert'>Post Liked Successfully!</div></div>"
 
-  // const postsArray = await Model.getAllPosts()
-
-  // const likes = await Model.getLikes(postId)
-
-  // console.log(likes)
-
-  // res.render("home", {posts: postsArray, likes: postsArray.likes});
-  res.render("home", {successMessage: successMessage})
-  // res.send('<script>window.location.href="/";</script>');
+  res.render("home", { posts: postsArray, successMessage: successMessage })
 });
-
-
-//-----------------------------------------------------------------------
 
 
 // Send back a static file

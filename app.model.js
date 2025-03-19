@@ -32,4 +32,8 @@ async function getLikes(id) {
     return results
 }
 
-module.exports = {makeConnection, getAllPosts, createPost, incrementLikes, getLikes}
+async function sortByLatest() {
+    return await db.all("SELECT * FROM Posts ORDER BY timestamp DESC")
+}
+
+module.exports = {makeConnection, getAllPosts, createPost, incrementLikes, getLikes, sortByLatest}
